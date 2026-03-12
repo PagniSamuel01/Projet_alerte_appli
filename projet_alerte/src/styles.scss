@@ -1,18 +1,43 @@
-@import url('https://fonts.googleapis.com/css2?family=Bungee&family=Inter:wght@400;600&display=swap');
+/* 
+   Système de design global de l'application.
+   Utilise les polices Outfit (Titres) et Inter (Texte courant).
+*/
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&family=Inter:wght@400;500;600&display=swap');
 
-html,
-body {
+:root {
+  /* Palette de couleurs Clean Light */
+  --bg-color: #fdfdfd;      // Fond de page blanc cassé
+  --surface-color: #ffffff; // Couleur des cartes
+  --primary-color: #0066ff; // Bleu électrique professionnel
+  --primary-hover: #0052cc; // Version plus foncée pour le survol
+  --text-main: #1a1a1a;     // Noir charbon pour une lecture nette
+  --text-muted: #666666;    // Gris pour les textes secondaires
+  --border-color: #eeeeee;  // Bordures ultra-fines
+  --error-color: #ff3b30;   // Rouge système iOS/Apple
+  
+  /* Configuration des transitions fluides */
+  --transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html, body {
   height: 100%;
   margin: 0;
   padding: 0;
+  overflow: hidden; // Empêche le scroll inutile si la page est centrée
 }
 
 body {
-  background: linear-gradient(135deg, #2b2b3a 0%, #1a1a24 100%);
-  background-attachment: fixed;
+  background-color: var(--bg-color);
+  font-family: 'Inter', sans-serif;
+  color: var(--text-main);
+  
+  /* Centrage automatique de l'application sur tous les écrans */
   display: flex;
   justify-content: center;
   align-items: center;
-  font-family: 'Inter', sans-serif;
-  color: white;
+  -webkit-font-smoothing: antialiased; // Rend le texte plus lisse sur Mac/iOS
+}
+
+* {
+  box-sizing: border-box; // Calcul des tailles incluant bordures et paddings
 }
