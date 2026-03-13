@@ -10,11 +10,11 @@ import { ReactiveFormsModule } from '@angular/forms';
   styleUrls: ['./interface-alerte.component.scss']
 })
 export class InterfaceAlerteComponent implements OnInit {
-  // Données reçues depuis le parent (AppComponent) pour les messages
-  @Input() donnee!: message;
+  // Données pour les messages
+  donnee = new message('Veuillez remplir tous les champs du formulaire svp!');
   
-  // Instance de la logique du formulaire reçue du parent
-  @Input() affich!: ReactiveModForm;
+  // Instance de la logique du formulaire
+  affich = new ReactiveModForm();
 
   // Variables pour les libellés affichés dans le HTML
   type_appli!: string;

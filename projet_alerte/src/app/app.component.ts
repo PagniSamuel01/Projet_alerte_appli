@@ -1,14 +1,16 @@
 import { Component } from '@angular/core';
-import { InterfaceAlerteComponent } from './interface-alerte/interface-alerte.component';
-import { message,ReactiveModForm} from './configiuration-alerte/configiuration-alerte.component';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
-  imports: [InterfaceAlerteComponent],
+  standalone: true,
+  // Le RouterOutlet permet d'afficher les pages dynamiquement selon l'adresse URL
+  imports: [RouterOutlet],
   templateUrl: './app.component.html',
   styleUrls:[ './app.component.scss']
 })
 export class AppComponent {
-  config= new message('Veillez remplir tout les champs du formulaire svp!')
-  aff= new ReactiveModForm ()
+  // Composant racine de l'application
 }
+
+

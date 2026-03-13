@@ -1,0 +1,10 @@
+<div class="user-container">
+  <h2>Liste des Utilisateurs</h2>
+  @if (users.length > 0) {
+    <ul>@for (user of users; track user.id) {
+        <li>{{ user.name }} (ID: {{ user.id }})</li>
+      }</ul>
+  } @else {
+    <p>Chargement des utilisateurs...</p>
+  }
+</div>

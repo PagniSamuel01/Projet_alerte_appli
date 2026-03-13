@@ -1,0 +1,81 @@
+<!-- Conteneur principal centré -->
+<div class="auth-wrapper">
+  
+  <!-- Carte d'authentification blanche -->
+  <div class="auth-card">
+    
+    <!-- En-tête : Titre et Sous-titre dynamiques -->
+    <div class="auth-header">
+      <h1 class="auth-title">
+        {{ isForgotPasswordMode ? 'Récupération' : 'Salut!' }}
+      </h1>
+      <p class="auth-subtitle">
+        {{ isForgotPasswordMode ? 'Entrez votre email pour réinitialiser votre mot de passe' : 'Entrez vos identifiants pour continuer' }}
+      </p>
+    </div>
+
+    <!-- Formulaire lié au FormGroup dans le TypeScript -->
+    <form [formGroup]="authForm" (ngSubmit)="onSubmit()" class="auth-form">
+
+      <!-- Champ Email (Toujours visible) -->
+      <div class="form-group">
+        <label for="email">Adresse email</label>
+        <div class="input-wrapper">
+          <input 
+            id="email" 
+            type="email" 
+            formControlName="email" 
+            placeholder="nom@exemple.com"
+            [class.invalid]="authForm.get('email')?.invalid && authForm.get('email')?.touched"
+          >
+          <span class="focus-border"></span>
+        </div>
+      </div>
+
+      <!-- Champ Mot de passe (Masqué si on récupère le compte) -->
+      <div class="form-group" *ngIf="!isForgotPasswordMode">
+        <div class="label-row">
+          <label for="password">Mot de passe</label>
+          <!-- Lien vers le mode "Mot de passe oublié" -->
+          <a (click)="switchToForgotPassword()" class="forgot-link">Oublié ?</a>
+        </div>
+        <div class="input-wrapper">
+          <input 
+            id="password" 
+            type="password" 
+            formControlName="password" 
+            placeholder="••••••••"
+            [class.invalid]="authForm.get('password')?.invalid && authForm.get('password')?.touched"
+          >
+          <span class="focus-border"></span>
+        </div>
+      </div>
+
+      <!-- Affichage des messages d'erreur du système -->
+      <div class="error-banner" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </div>
+
+      <!-- Affichage des messages de succès (ex: mail envoyé) -->
+      <div class="success-banner" *ngIf="successMessage">
+        {{ successMessage }}
+      </div>
+
+      <!-- Bouton de validation (se désactive si le formulaire est invalide) -->
+      <button type="submit" class="auth-button" [disabled]="authForm.invalid || isLoading"> 
+        <span *ngIf="!isLoading">
+          {{ isForgotPasswordMode ? 'Envoyer le mail' : 'Se connecter' }}
+        </span>
+        <!-- Petit cercle de chargement si action en cours -->
+        <div class="spinner" *ngIf="isLoading"></div>
+      </button>
+
+      <!-- Lien pour revenir en arrière depuis le mode récupération -->
+      <div class="auth-footer" *ngIf="isForgotPasswordMode">
+        <button type="button" class="toggle-button" (click)="backToLogin()">
+          Retour à la connexion
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
