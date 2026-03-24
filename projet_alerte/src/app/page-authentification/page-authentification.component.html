@@ -44,9 +44,10 @@
             id="password" 
             type="password" 
             formControlName="password" 
-            placeholder="••••••••"
+            placeholder="Entrer le mot de passe"
             [class.invalid]="authForm.get('password')?.invalid && authForm.get('password')?.touched"
           >
+          
           <span class="focus-border"></span>
         </div>
       </div>
@@ -61,14 +62,18 @@
         {{ successMessage }}
       </div>
 
-      <!-- Bouton de validation (se désactive si le formulaire est invalide) -->
-      <button type="submit" class="auth-button" [disabled]="authForm.invalid || isLoading"> 
-        <span *ngIf="!isLoading">
-          {{ isForgotPasswordMode ? 'Envoyer le mail' : 'Se connecter' }}
-        </span>
-        <!-- Petit cercle de chargement si action en cours -->
-        <div class="spinner" *ngIf="isLoading"></div>
-      </button>
+      <!-- Boutons d'action -->
+      <div class="auth-actions">
+        <button type="button" class="auth-button register-btn" [disabled]="authForm.invalid || isLoading" (click)="onRegister()" *ngIf="!isForgotPasswordMode">
+          <span *ngIf="!isLoading">S'enregistrer</span>
+        </button>
+        <button type="button" class="auth-button" [disabled]="authForm.invalid || isLoading" (click)="onSubmit()"> 
+          <span *ngIf="!isLoading">
+            {{ isForgotPasswordMode ? 'Envoyer le mail' : 'Se connecter' }}
+          </span>
+          <div class="spinner" *ngIf="isLoading"></div>
+        </button>
+      </div> 
 
       <!-- Lien pour revenir en arrière depuis le mode récupération -->
       <div class="auth-footer" *ngIf="isForgotPasswordMode">

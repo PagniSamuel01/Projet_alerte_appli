@@ -21,5 +21,8 @@ export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   
   // Redirection si l'adresse n'existe pas
-  { path: '**', redirectTo: 'login' }
+  { path: '**', redirectTo: 'login' },
+
+  { path: '', component: InterfaceAlerteComponent }, // Affiche le composant à la racine (http://localhost:4200)
+  { path: 'alerte', component: InterfaceAlerteComponent } // Affiche aussi sur /alerte
 ];

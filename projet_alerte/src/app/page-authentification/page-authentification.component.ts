@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-page-authentification',
@@ -28,6 +29,7 @@ export class PageAuthentificationComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
+    private userService: UserService,
     private router: Router
   ) {
     // Initialisation du formulaire avec des validateurs stricts
@@ -35,7 +37,7 @@ export class PageAuthentificationComponent implements OnInit {
       email: ['', [
         Validators.required, 
         Validators.email, 
-        Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)
+        Validators.pattern(/^[\w.-]+@[\w.-]+\.[a-zA-Z]{2,4}$/)
       ]],
       password: ['', [Validators.required, Validators.minLength(8)]]
     }); 
@@ -113,5 +115,27 @@ export class PageAuthentificationComponent implements OnInit {
         this.errorMessage = 'Email ou mot de passe incorrect.';
       }
     }, 1000);
+  }
+
+  onRegister() {
+    if (this.authForm.invalid) return;
+    this.isLoading = true;
+    this.errorMessage = '';
+    this.successMessage = '';
+
+    const { email, password } = this.authForm.value;
+    
+    this.userService.register({ mail: email, motdepasse: password }).subscribe({
+      next: (res) => {
+        this.isLoading = false;
+        alert('Utilisateur enregistré avec succès dans la base de données !');
+        this.successMessage = 'Compte créé ! Vous pouvez vous connecter.';
+      },
+      error: (err) => {
+        this.isLoading = false;
+        console.error('Erreur :', err);
+        this.errorMessage = "Erreur lors de la création du compte.";
+      }
+    });
   }
 }
