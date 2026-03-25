@@ -22,4 +22,14 @@ export class UsersController {
   findAll() {
     return this.userService.findAll();
   }
+  @Post('login')
+  async login(@Body() userData: Partial<User>): Promise<User> {
+    console.log('Tentative de login reçue:', userData);
+    try {
+      return await this.userService.login(userData);
+    } catch (error) {
+      console.error('Erreur login:', error.message);
+      throw new HttpException('Email ou mot de passe incorrect', HttpStatus.UNAUTHORIZED);
+    }
+  }
 }

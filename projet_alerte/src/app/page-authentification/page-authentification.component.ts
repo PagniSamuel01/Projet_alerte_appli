@@ -81,40 +81,41 @@ export class PageAuthentificationComponent implements OnInit {
     this.isLoading = true;
     this.errorMessage = '';
     this.successMessage = '';
+    const { email, password } = this.authForm.value;
 
-    // Simulation d'une attente réseau (1 seconde)
-    setTimeout(() => {
-      const { email, password } = this.authForm.value;
-      
-      // CAS 1 : Mode récupération de mot de passe
-      if (this.isForgotPasswordMode) {
-        const success = this.authService.resetPassword(email);
-        this.isLoading = false;
-        if (success) {
-          this.successMessage = 'Un email de réinitialisation a été envoyé.';
-          
-          // Retour automatique à l'écran de connexion après 2 secondes
-          setTimeout(() => {
-            this.backToLogin();
-          }, 2000);
-          
-        } else {
-          this.errorMessage = 'Une erreur est survenue lors de l\'envoi.';
-        }
-        return;
-      }
-
-      // CAS 2 : Mode connexion classique
-      const success = this.authService.login(email, password);
+    // CAS 1 : Mode récupération de mot de passe
+    if (this.isForgotPasswordMode) {
+      const success = this.authService.resetPassword(email);
       this.isLoading = false;
-      
       if (success) {
-        // Redirection vers le formulaire d'alerte en cas de succès
-        this.router.navigate(['/form']);
+        this.successMessage = 'Un email de réinitialisation a été envoyé.';
+        
+        // Retour automatique à l'écran de connexion après 2 secondes
+        setTimeout(() => {
+          this.backToLogin();
+        }, 2000);
+        
       } else {
+        this.errorMessage = 'Une erreur est survenue lors de l\'envoi.';
+      }
+      return;
+    }
+
+    // CAS 2 : Mode connexion classique
+    this.authService.login(email, password).subscribe({
+      next: (user) => {
+        this.isLoading = false;
+        if (user) {
+          // Redirection vers le formulaire d'alerte en cas de succès
+          this.router.navigate(['/form']);
+        }
+      },
+      error: (err) => {
+        this.isLoading = false;
+        console.error('Erreur login:', err);
         this.errorMessage = 'Email ou mot de passe incorrect.';
       }
-    }, 1000);
+    });
   }
 
   onRegister() {
