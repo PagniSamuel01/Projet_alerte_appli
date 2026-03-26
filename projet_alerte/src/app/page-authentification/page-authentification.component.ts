@@ -85,19 +85,22 @@ export class PageAuthentificationComponent implements OnInit {
 
     // CAS 1 : Mode récupération de mot de passe
     if (this.isForgotPasswordMode) {
-      const success = this.authService.resetPassword(email);
-      this.isLoading = false;
-      if (success) {
-        this.successMessage = 'Un email de réinitialisation a été envoyé.';
-        
-        // Retour automatique à l'écran de connexion après 2 secondes
-        setTimeout(() => {
-          this.backToLogin();
-        }, 2000);
-        
-      } else {
-        this.errorMessage = 'Une erreur est survenue lors de l\'envoi.';
-      }
+      this.authService.requestPasswordReset(email).subscribe({
+        next: (res: any) => {
+          this.isLoading = false;
+          this.successMessage = 'Un email de réinitialisation a été envoyé.';
+          
+          // Retour automatique à l'écran de connexion après 3 secondes
+          setTimeout(() => {
+            this.backToLogin();
+          }, 3000);
+        },
+        error: (err) => {
+          this.isLoading = false;
+          console.error('Erreur forgot-password:', err);
+          this.errorMessage = "Une erreur est survenue. Vérifiez l'adresse email.";
+        }
+      });
       return;
     }
 

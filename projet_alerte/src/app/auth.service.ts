@@ -30,15 +30,16 @@ export class AuthService {
     return this.authenticated();
   }
 
+  private readonly API_URL = 'http://192.168.1.189:8080/auth';
+
   /**
    * Connecte l'utilisateur en appelant le serveur backend
    */
   login(email: string, password: string) {
-    return this.http.post<any>('http://192.168.1.189:8080/users/login', {
+    return this.http.post<any>(`${this.API_URL}/login`, {
       mail: email,
       motdepasse: password
     }).pipe(
-      // On peut ajouter de la logique ici si besoin, comme stocker le token
       tap((user: any) => {
         if (user) {
           if (typeof window !== 'undefined') {
@@ -51,6 +52,20 @@ export class AuthService {
   }
 
   /**
+   * Demande un lien de réinitialisation par email
+   */
+  requestPasswordReset(email: string) {
+    return this.http.post(`${this.API_URL}/forgot-password`, { email });
+  }
+
+  /**
+   * Réinitialise le mot de passe avec le token
+   */
+  confirmPasswordReset(token: string, newPassword: string) {
+    return this.http.post(`${this.API_URL}/reset-password`, { token, newPassword });
+  }
+
+  /**
    * Déconnecte l'utilisateur en supprimant son jeton
    */
   logout() {
@@ -60,18 +75,7 @@ export class AuthService {
     this.authenticated.set(false);
   }
 
-  /**
-   * Simule l'envoi d'un mail de réinitialisation de mot de passe
-   */
-  resetPassword(email: string): boolean {
-    if (email) {
-      console.log('Demande de réinitialisation envoyée pour :', email);
-      return true;
-    }
-    return false;
-  }
   envoyerconfirmation(mail:string){
-    return this.http.post('http://192.168.1.189:8080/users/registrer',mail); 
-  
+    return this.http.post('http://192.168.1.189:8080/users/registrer', mail); 
   }
 }

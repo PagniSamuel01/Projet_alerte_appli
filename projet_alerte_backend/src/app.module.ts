@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
+import { FormAlerteModule } from './form_alerte/form_alerte.module';
 
 @Module({
   imports: [
@@ -11,12 +12,13 @@ import { UsersModule } from './users/users.module';
       port: 1521,
       username: 'C##users',
       password: 'devfuture1@',
-      sid: 'xe',
+      serviceName: 'xe',
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
-      synchronize: true,
+      synchronize: true, 
     }),
     AuthModule,
     UsersModule,
+    FormAlerteModule,
   ],
 })
 export class AppModule {}

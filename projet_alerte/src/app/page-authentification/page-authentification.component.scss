@@ -195,5 +195,10 @@
   }
 }
 
-.auth-actions { display: flex; gap: 10px; margin-top: 20px; }
+.auth-actions { 
+  display: flex; 
+  gap: 12px; 
+  margin-top: 24px;
+  justify-content: center; // Centrage des boutons
+}
 .register-btn { background-color: #6c757d !important; }

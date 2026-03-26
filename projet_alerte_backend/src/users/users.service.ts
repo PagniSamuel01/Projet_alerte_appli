@@ -24,9 +24,28 @@ export class UsersService {
   }
 
   async findOneByEmail(mail: string): Promise<User | null> {
-    const users = await this.findAll();
     const searchMail = mail.trim().toLowerCase();
-    return users.find(u => u.mail.trim().toLowerCase() === searchMail) || null;
+    // Utiliser findOneBy pour l'efficacité au lieu de findAll().find()
+    return await this.usersRepository.findOneBy({ mail: searchMail });
+  }
+
+  async findByResetToken(token: string): Promise<User | null> {
+    return await this.usersRepository.findOneBy({ resetToken: token });
+  }
+
+  async updatePassword(userId: number, newPassword: string): Promise<void> {
+    await this.usersRepository.update(userId, { 
+      motdepasse: newPassword, // Note: Devrait être hashé idéalement
+      resetToken: null, 
+      resetTokenExpiry: null 
+    });
+  }
+
+  async setResetToken(userId: number, token: string, expiry: Date): Promise<void> {
+    await this.usersRepository.update(userId, {
+      resetToken: token,
+      resetTokenExpiry: expiry
+    });
   }
 
   async login(userData: Partial<User>): Promise<User> {

@@ -10,4 +10,9 @@ export class User {
 
   @Column()
   motdepasse: string;
+  @Column({ type: 'varchar2', length: 255, nullable: true })
+  resetToken: string | null;
+
+  @Column({ type: 'timestamp', nullable: true })
+  resetTokenExpiry: Date | null;
 }
