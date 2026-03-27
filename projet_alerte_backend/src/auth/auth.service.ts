@@ -60,18 +60,19 @@ export class AuthService {
       secure: false,
       auth: {
         user: 'trvmisvmi@gmail.com', // À CONFIGURER
-        pass: 'ixqkpdfldrhpxcxq', // À CONFIGURER 
+        pass: 'gatjctsrvbnwsoha', // À CONFIGURER 
       },
     });
 
     // On remplace localhost par l'IP réelle pour que ça marche aussi sur mobile/tablette (sur le même réseau)
-    const resetLink = `http://192.168.1.189:4200/reset-password?token=${token}`;
+    // Synchronisation forcée du port 4200
+    const resetLink = `http://192.168.1.189:4200/reset-password?token=${token}`; 
 
     await transporter.sendMail({
-      from: '"Projet Alerte" <no-reply@projetalerte.com>',
+      from: '" Alerte" <no-reply@projetalerte.com>',
       to: email,
       subject: 'Réinitialisation de votre mot de passe',
-      html: `
+      html: ` 
         <div style="background-color: #f8f9fa; padding: 40px 20px; font-family: 'Segoe UI', Arial, sans-serif;">
           <div style="max-width: 500px; margin: 0 auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
             <h2 style="color: #333; font-size: 24px; margin-bottom: 20px; text-align: center;">Réinitialisation de mot de passe</h2>

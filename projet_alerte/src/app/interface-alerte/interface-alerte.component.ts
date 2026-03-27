@@ -1,8 +1,10 @@
-import { Component, Input, OnInit,NgModule } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { message, ReactiveModForm } from '../configiuration-alerte/configiuration-alerte.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { UserService } from '../services/user.service';
- 
+import{AlerteService} from '../services/alerte.service';
+
+
 @Component({
   selector: 'app-interface-alerte',
   standalone: true, // Composant autonome (pas besoin de module Angular classique)
@@ -22,20 +24,39 @@ export class InterfaceAlerteComponent implements OnInit {
   alerte!: string;
   titre_form!: string; 
   email!: string;
- 
+
+  users: any[] = [];
+
+  constructor(private userService: UserService,private alerteService: AlerteService){}
   /**
    * Initialisation des textes du composant au démarrage.
    */
-   users: any[]=[];
-  constructor(private userService:UserService){}
   ngOnInit(): void {
     this.type_appli = 'Application';
     this.alerte = 'Date d\'alerte';
     this.titre_form = "Formulaire d'alerte";
     this.email = "Adresse mail";
-     this.userService.getUsers().subscribe({
-      next:(data)=> this.users=data,
-      error:(err)=> console.error("Erreur backend:",err)
-    })
+
+    this.userService.getUsers().subscribe({
+      next: (data) => this.users = data,
+      error: (err) => console.error("Erreur backend:", err)
+    });
   }
+ onSubmit(){
+  if (this.affich.formGroup.valid){
+    this.alerteService.posteAlerte(this.affich.formGroup.value).subscribe({
+      next:(response) =>{
+        console.log(response)
+        this.donnee.message_envoyer="Alerte envoyée avec succès";
+        this.affich.formGroup.reset()
+      },
+      error:(err) => {
+        console.error("Erreur lors de l'envoie d\'alerte",err)
+      }
+      });
+     }
+      else{
+      this.affich.onbutton()
+    }
+ }
 }

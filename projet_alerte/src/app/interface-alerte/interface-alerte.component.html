@@ -1,5 +1,3 @@
-
-
 <div class="main-wrapper">
   <div class="card-container">
     <div class="card-header">
@@ -7,11 +5,12 @@
       <p class="card-subtitle">Entrez les détails pour générer l'alerte système.</p>
     </div>
 
-    <form class="custom-form" [formGroup]="affich.formGroup" (ngSubmit)="affich.onbutton()">
+
+    <form class="custom-form" [formGroup]="affich.formGroup" (ngSubmit)="onSubmit()">
       
       <!-- Email Field -->
       <div class="form-field">
-        <label for="email" class="field-label">{{email}}</label>
+        <label for="email" class="field-label">{{email}}</label> 
         <div class="input-wrapper">
           <input 
             type="email" 
@@ -53,7 +52,7 @@
         <label for="alerte" class="field-label">{{alerte}}</label>
         <div class="input-wrapper">
           <input 
-            type="datetime-local" 
+            type="date" 
             formControlName="alerte" 
             id="alerte"
             [class.error]="affich.formGroup.get('alerte')?.hasError('required') && affich.formGroup.get('alerte')?.touched">
@@ -79,14 +78,5 @@
       </button>
 
     </form>
-  <div>
-    @for (user of users; track user.id) {
-      <div>
-        <p>Données brutes : {{ user.id}}:{{user.mail }}:{{user.motdepasse}}</p>
-      </div>
-    } @empty {
-      <p>Aucun utilisateur à afficher (ou erreur de connexion).</p>
-    }
-  </div>
   </div>
 </div>

@@ -7,6 +7,7 @@ export class FormAlerte {
   email: string;
   @Column()
   appli: string;
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  @Column({ type: 'date', default: () => 'CURRENT_DATE' })
   date_alerte: Date;
 }
+

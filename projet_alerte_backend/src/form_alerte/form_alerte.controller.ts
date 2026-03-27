@@ -14,9 +14,15 @@ export class FormAlerteController {
   constructor(private readonly formService: FormAlerteService) {}
 
   @Post('alerte')
-  async register(@Body() formData: Partial<FormAlerte>): Promise<FormAlerte> {
+  async register(@Body() formData: any): Promise<FormAlerte> {
     try {
-      return await this.formService.create(formData);
+      // Mapper les noms du formulaire Angular vers les colonnes de l'entité
+      const donneesMappees: Partial<FormAlerte> = {
+        email: formData.email,
+        appli: formData.type_appli,    // formulaire: type_appli → entité: appli
+        date_alerte: formData.alerte,  // formulaire: alerte     → entité: date_alerte
+      };
+      return await this.formService.create(donneesMappees);
     } catch (error) {
       console.error('Erreur du serveur dedié (register)', error);
       throw new HttpException(

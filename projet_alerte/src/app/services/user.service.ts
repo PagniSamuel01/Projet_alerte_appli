@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class UserService {
-private apiUrl='http://192.168.1.189:8080/users';
+private apiUrl='http://192.168.1.189:8080/users';  
   constructor( 
     private http: HttpClient
   ) { }
@@ -17,3 +17,4 @@ register(userData: any): Observable<any> {
   return this.http.post(this.apiUrl + '/registrer',userData)
 }
 }
+
